@@ -9,25 +9,25 @@ from app.service.email_service import send_email
 
 class OrderCrud:
     @staticmethod
-    async def get_order(email:str,db:AsyncSession):
+    async def get_order(email: str, db: AsyncSession):
         try:
-            res = await db.execute(select(Order).where(Order.email==email))
+            res = await db.execute(select(Order).where(Order.email == email))
             return res
 
         except Exception as e:
             raise e
 
     @staticmethod
-    async def create_order(data:OrderCreate,db:AsyncSession):
-        prices = await db.execute(select(Furniture).where(Furniture.id.in_(data.furniture_ids)))
+    async def create_order(data: OrderCreate, db: AsyncSession):
+        prices = await db.execute(
+            select(Furniture).where(Furniture.id.in_(data.furniture_ids))
+        )
         furniture_prices = prices.scalars().all()
 
         total_price = sum(item.price for item in furniture_prices)
 
-        order=Order(
-            email=data.email,
-            list_goods=data.furniture_ids,
-            over_all_price=total_price
+        order = Order(
+            email=data.email, list_goods=data.furniture_ids, over_all_price=total_price
         )
         try:
             db.add(order)

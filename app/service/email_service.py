@@ -21,11 +21,13 @@ async def send_email(email: str, subject: str, body: str):
         context = ssl.create_default_context()
 
         # Send email
-        with smtplib.SMTP_SSL(settings.SMTP_SERVER, settings.SMTP_PORT, context=context) as server:
+        with smtplib.SMTP_SSL(
+            settings.SMTP_SERVER, settings.SMTP_PORT, context=context
+        ) as server:
             server.login(settings.SENDER_EMAIL, settings.SENDER_PASSWORD)
             server.send_message(message)
 
-        return {"message": 'Email sent!'}
+        return {"message": "Email sent!"}
     except smtplib.SMTPAuthenticationError:
         print("Authentication failed. Check your email and App Password.")
     except Exception as e:

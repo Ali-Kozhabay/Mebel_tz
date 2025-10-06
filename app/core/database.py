@@ -4,7 +4,9 @@ from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
 
 engine = create_async_engine(settings.DATABASE_URL)
-SessionLocal = async_sessionmaker(autocommit=False, class_=AsyncSession, autoflush=False, bind=engine)
+SessionLocal = async_sessionmaker(
+    autocommit=False, class_=AsyncSession, autoflush=False, bind=engine
+)
 
 
 class Base(DeclarativeBase):

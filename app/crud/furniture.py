@@ -1,13 +1,12 @@
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.models.furniture import Furniture
 
-class FurnitureCrud():
 
+class FurnitureCrud:
     @staticmethod
-    async def get_all_furniture(db : AsyncSession):
+    async def get_all_furniture(db: AsyncSession):
         try:
             res = await db.execute(select(Furniture))
             return res.scalars().all()
@@ -15,20 +14,20 @@ class FurnitureCrud():
             raise e
 
     @staticmethod
-    async def get_furniture_by_id(db:AsyncSession,furniture_id:int):
+    async def get_furniture_by_id(db: AsyncSession, furniture_id: int):
         try:
-            res = await db.execute(select(Furniture).where(Furniture.id == furniture_id))
+            res = await db.execute(
+                select(Furniture).where(Furniture.id == furniture_id)
+            )
             return res.scalars().first()
         except Exception as e:
             raise e
 
     @staticmethod
-    async def add_furniture(db:AsyncSession,data:Furniture):
+    async def add_furniture(db: AsyncSession, data: Furniture):
         try:
             furniture = Furniture(
-                name = data.name,
-                price = data.price,
-                category=data.category
+                name=data.name, price=data.price, category=data.category
             )
             db.add(furniture)
             await db.commit()
@@ -36,5 +35,6 @@ class FurnitureCrud():
 
         except Exception as e:
             raise e
+
 
 furniture_crud = FurnitureCrud()

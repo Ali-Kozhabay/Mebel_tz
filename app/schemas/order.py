@@ -1,7 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class OrderCreate(BaseModel):
-
-    email:str
-    furniture_ids:list[int]
+    email: str
+    furniture_ids: list[int]
